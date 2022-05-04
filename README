@@ -1,0 +1,15 @@
+This package provides the kernel driver for the Technica Engineering USB BroadR-Reach Converter.
+
+Requirements:
+	- DKMS (for automatic kernel module installation)
+	- kernel version >= 4.12
+
+To install using DKMS, run:
+	sudo make install-dkms
+	
+To uninstall using DKMS, run
+	sudo make uninstall-dkms
+
+To control master/slave mode using ethtool, run
+For master:	sudo ethtool -s <interface name> mdix off
+For slave:	sudo ethtool -s <interface name> mdix on
