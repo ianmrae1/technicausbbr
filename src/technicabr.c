@@ -33,6 +33,7 @@
 #include <linux/crc32.h>
 #include <linux/usb/usbnet.h>
 #include <linux/slab.h>
+#include <linux/version.h>
 
 #define USB_MODULE_NAME			"technicabr"
 #define SMSC_MII_BUS_NAME		"technicabr_mii_bus"
@@ -849,7 +850,11 @@ static int technicabr_get_link_ksettings(struct net_device *net,
 	struct technicabr_priv *pdata = (struct technicabr_priv *)(dev->data[0]);
 	int retval;
 
+#if LINUX_VERSION_CODE <= KERNEL_VERSION(5,13,0)
 	retval = usbnet_get_link_ksettings(net, cmd);
+#else
+	retval = usbnet_get_link_ksettings_mii(net, cmd);
+#endif
 
 	cmd->base.eth_tp_mdix = pdata->mdix_ctrl;
 	cmd->base.eth_tp_mdix_ctrl = pdata->mdix_ctrl;
@@ -873,7 +878,11 @@ static int technicabr_set_link_ksettings(struct net_device *net,
 	technicabr_set_br_mode(net, cmd->base.eth_tp_mdix_ctrl);
 	pdata->mdix_ctrl = cmd->base.eth_tp_mdix_ctrl;
 
+#if LINUX_VERSION_CODE <= KERNEL_VERSION(5,13,0)
 	retval = usbnet_set_link_ksettings(net, cmd);
+#else
+	retval = usbnet_set_link_ksettings_mii(net, cmd);
+#endif
 
 	return retval;
 }
