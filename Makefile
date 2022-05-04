@@ -38,12 +38,12 @@ install-udev:
 	cp $(UDEV_SRCDIR)/$(UDEV_RULES_FILE) $(UDEV_TARGET_FOLDER)/$(UDEV_RULES_FILE)
 	chown root:root $(UDEV_TARGET_FOLDER)/$(UDEV_RULES_FILE)
 	chmod 0644 $(UDEV_TARGET_FOLDER)/$(UDEV_RULES_FILE)
-	/sbin/udevadm control -R
+	udevadm control -R
 	
 .PHONY: uninstall-udev
 uninstall-udev:
 	if [ -a $(UDEV_TARGET_FOLDER)/$(UDEV_RULES_FILE) ]; then rm $(UDEV_TARGET_FOLDER)/$(UDEV_RULES_FILE); fi
-	/sbin/udevadm control -R
+	udevadm control -R
 
 .PHONY: install-common
 install-common: install-header install-udev
